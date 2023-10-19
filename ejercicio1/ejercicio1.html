@@ -1,0 +1,73 @@
+<html>
+
+<head>
+	<meta charset="utf-8"/>
+	<title>Ejercicio 1</title>
+</head>
+<script>
+
+	var http;
+
+	window.onload = iniciar;
+
+	function iniciar(){
+		var formulario = document.getElementById("formulario");
+		formulario.addEventListener("submit", pedirFichero);
+	}
+
+	// hace la llamada AJAX para pedir el fichero
+	function pedirFichero(event){
+		event.preventDefault();
+		
+		// 1er paso
+		http = new XMLHttpRequest();
+		
+		
+		var fichero = document.getElementById("formulario").elements["fichero"].value;
+		// fichero directamente
+		//var url = fichero;
+		
+		// fichero directamente a traves de php
+		//var url = "ejercicio1.php";
+		
+		// fichero a traves parametro de php
+		var url = "ejercicio1.php?fichero=" + fichero;
+		
+		// 2º paso
+		http.open("GET", url, true);
+		
+		// 3er paso
+		http.onreadystatechange = recogerFichero;
+		
+		// 4o paso
+		http.send(null);
+	}
+
+	// espera a que la llamada esté lista y recoge el contenido del fichero
+	function recogerFichero(){
+		if (http.readyState == 4) {
+			// Se ha recibido la respuesta.
+			if(http.status==200) {
+				// Aquí escribiremos lo que queremos que
+				// se ejecute tras recibir la respuesta
+				var documento = http.responseText;
+				var parrafo = document.getElementById("contenido");
+				parrafo.textContent = documento;
+				
+			} else {
+				// Ha ocurrido un error
+				alert("Error:"+http.statusText);
+			}
+		}
+	}
+</script>
+
+<body>
+	<form id="formulario">
+		<input type="text" name="fichero"/>
+		<input type="submit" name="enviar" value="Enviar"/>
+	</form>
+	<p id="contenido"></p>
+</body>
+
+</html>
