@@ -21,6 +21,85 @@ body { margin: 0; }
 }
 </style>
 <script type="text/javascript">
+  window.onload=inicio;
+  var http=null;
+  var intervalo=null;
+  var numeroElemento=null;
+  var noticias=[];
+  function inicio(){
+   intervalo=setInterval(nuevaNoticia,1000);
+   let detener=document.getElementById("detener");
+   detener.addEventListener("click",playPause);
+   
+   let anterior=document.getElementById("anterior");
+   anterior.addEventListener("click",noticiaAnterior);
+
+   let siguiente=document.getElementById("siguiente");
+   siguiente.addEventListener("click",noticiaSiguiente);
+
+  }
+  function cargar(){
+    let ticker=document.getElementById("ticker");
+      if(http.readyState==4){
+        if(http.status==200){
+          noticias.push(http.responseText);
+          
+          mostrarNoticia(noticias[noticias.length-1]);
+        }
+      }
+  }
+  function mostrarNoticia(noticia) {
+    ticker.textContent=noticia;
+  }
+  function nuevaNoticia(){
+    if(http==null){
+      http= new XMLHttpRequest();
+    }
+      
+      let url="http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio2/servidor/generaContenidos.php";
+      http.open("GET",url,true);
+      http.onreadystatechange=cargar;
+      http.send(null);
+    
+  }
+  function playPause(event) {
+    event.preventDefault();
+console.log(this.value);
+    if(this.value=="Detener"){
+      clearInterval(intervalo);
+      this.value="Iniciar";
+    }else{
+      
+      intervalo=setInterval(nuevaNoticia,1000);
+      this.value="Detener";
+    }
+    
+  }
+  function noticiaAnterior(event) {
+    // event.preventDefault();
+    let detener=document.getElementById("detener");
+    clearInterval(intervalo);
+    detener.value="Iniciar";
+    if(numeroElemento==null){
+      numeroElemento=noticias.length-1;
+    }
+    if(numeroElemento>0){
+      numeroElemento--;
+    }
+    console.log(numeroElemento);
+    console.log(noticias[numeroElemento]);
+    mostrarNoticia(noticias[numeroElemento]);
+ console.log("anterior");
+   
+    
+  }
+  function noticiaSiguiente(event) {
+    event.preventDefault();
+ console.log("siguiente");
+
+    
+  }
+  
 </script>
 </head>
 <body>
@@ -33,6 +112,7 @@ body { margin: 0; }
 </div>
 
 <div id="contenidos">
+  
 <h1>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</h1>
 <p>Proin tristique condimentum sem. Fusce lorem sem, laoreet nec, laoreet et, venenatis nec, ligula.
 Nunc dictum sodales lorem. Fusce turpis. Nullam semper, ipsum ut ultrices mattis, nulla magna luctus 

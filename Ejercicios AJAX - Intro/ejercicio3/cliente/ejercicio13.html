@@ -5,7 +5,37 @@
 <title>Ejercicio 13 - Comprobar disponibilidad del login</title>
 
 <script type="text/javascript">
+window.onload=inicio;
+var http=null;
+function inicio() {
+	let comprobar=document.getElementById("comprobar");
+	comprobar.addEventListener("click",comprobacion);
+}
+function comprobacion(){
+	let login=document.getElementById("login");
+	http=new XMLHttpRequest();
+let url="http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio3/servidor/compruebaDisponibilidad.php";
 
+	http.open("POST",url,true);
+	http.onreadystatechange=respuesta;
+	http.send("login="+login+"&nocache="+Math.random());
+
+}
+function respuesta() {
+	if(http.readyState==4){
+		if(http.status==200){
+	let login=document.getElementById("login");
+	let dispo=document.getElementById("disponibilidad");
+
+			if(http.responseText=="si"){
+				dispo.textContent="El nombre "+login.value+" esta disponible";
+			}else{
+				dispo.textContent="El nombre "+login.value+" no esta disponible";
+
+			}
+		}
+	}
+}
 </script>
 </head>
 

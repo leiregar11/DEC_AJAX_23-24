@@ -79,22 +79,22 @@
     function mostrarEstados() {
       let peticion=document.getElementById("estados");
           let texto;
-          switch (xhr.readyState) {
+          switch (http.readyState) {
         case 0:
-            texto=http.readyState+": UNINITIALIZED \n ";
+            texto=http.readyState+": UNINITIALIZED \n";
             break;
         case 1:
-            texto=http.readyState+": LOADIN \n ";
+            texto=http.readyState+": LOADIN \n";
 
             break;
         case 2:
-            texto=http.readyState+": LOADED \n ";
+            texto=http.readyState+": LOADED \n";
             break;
         case 3:
-            texto=http.readyState+": INTERACTIVE \n ";
+            texto=http.readyState+": INTERACTIVE \n";
             break;
         case 4:
-            texto=http.readyState+": COMPLETE \n ";
+            texto=http.readyState+": COMPLETE \n";
             break;
     }
     peticion.textContent+=texto;
