@@ -22,20 +22,16 @@ peticion_http.onreadystatechange = procesaRespuesta;
 peticion_http.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio5/servidor/compruebaDisponibilidadJSON.php", true);
 peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 var  cadena_segura = encodeURIComponent(login.value);
-peticion_http.send("login="+cadena_segura+"&nocache="+Math.random());
+peticion_http.send("login="+cadena_segura);
 }
 }
 function procesaRespuesta() {
 	if(peticion_http.readyState==4){
 		if(peticion_http.status==200){
 	let dispo=document.getElementById("disponibilidad");
-	
-	var respuesta_json = peticion_http.responseText;
-var objeto_json = eval("("+respuesta_json+")");
-var mensaje = objeto_json.mensaje;
-				dispo.innerHTML = mensaje;
-				
-			console.log(mensaje);
+
+				dispo.innerHTML = peticion_http.responseText;
+			console.log(peticion_http.responseText);
 			
 		}
 	}
