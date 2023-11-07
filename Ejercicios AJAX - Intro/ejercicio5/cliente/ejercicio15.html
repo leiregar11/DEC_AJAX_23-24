@@ -14,25 +14,36 @@ function inicio() {
     
 }
 function valida() {
-	 login=document.getElementById("login");
+	login=document.getElementById("login");
 
-peticion_http = new XMLHttpRequest();
-if(peticion_http) {
-peticion_http.onreadystatechange = procesaRespuesta;
-peticion_http.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio5/servidor/compruebaDisponibilidadJSON.php", true);
-peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-var  cadena_segura = encodeURIComponent(login.value);
-peticion_http.send("login="+cadena_segura);
-}
+	peticion_http = new XMLHttpRequest();
+	if(peticion_http) {
+		peticion_http.onreadystatechange = procesaRespuesta;
+		peticion_http.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio5/servidor/compruebaDisponibilidadJSON.php", true);
+		peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		var  cadena_segura = encodeURIComponent(login.value);
+		peticion_http.send("login="+cadena_segura);
+	}
 }
 function procesaRespuesta() {
 	if(peticion_http.readyState==4){
 		if(peticion_http.status==200){
-	let dispo=document.getElementById("disponibilidad");
-
-				dispo.innerHTML = peticion_http.responseText;
-			console.log(peticion_http.responseText);
+			let dispo=document.getElementById("disponibilidad");
+			// var respuesta_json = peticion_http.responseText;
+			// var objeto_json = eval("("+respuesta_json+")");
+			var objeto_json = JSON.parse(peticion_http.responseText);
+			var disponible = objeto_json.disponible;
 			
+			
+			dispo.textContent="EL nombre de usuario "+disponible+" esta disponible";
+			if(disponible!="si"){
+				dispo.innerHTML+="<h3>Alternativas</h3>";
+				dispo.innerHTML+="<ul>";
+				dispo.innerHTML+= "<li>"+objeto_json.alternativas.join("</li><li> ")+"</li>";
+				dispo.innerHTML+="</ul>";
+				
+
+			}
 		}
 	}
 }

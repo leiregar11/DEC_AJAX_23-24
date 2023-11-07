@@ -18,28 +18,35 @@ function valida() {
     // console.log("entra valida");
 	login=document.getElementById("login");
     // console.log("valida");
-peticion_http = new XMLHttpRequest();
-if(peticion_http) {
-peticion_http.onreadystatechange = procesaRespuesta;
-peticion_http.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio4/servidor/compruebaDisponibilidadXML.php", true);
-peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-var  cadena_segura = encodeURIComponent(login.value);
-peticion_http.send("login="+cadena_segura+"&nocache="+Math.random());
-}
+	peticion_http = new XMLHttpRequest();
+	if(peticion_http) {
+		peticion_http.onreadystatechange = procesaRespuesta;
+		peticion_http.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio4/servidor/compruebaDisponibilidadXML.php", true);
+		peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		var  cadena_segura = encodeURIComponent(login.value);
+		peticion_http.send("login="+cadena_segura+"&nocache="+Math.random());
+	}
 }
 function procesaRespuesta() {
-    console.log("hola");
 	if(peticion_http.readyState==4){
 		if(peticion_http.status==200){
 	        let dispo=document.getElementById("disponibilidad");
-           
-		    let documento_xml = peticion_http.responseXML;
-           console.log(documento_xml);
+			let documento_xml = peticion_http.responseXML;
+           	
             let raiz=documento_xml.getElementsByTagName("respuesta")[0];
             let resultado=raiz.getElementsByTagName("disponible")[0].childNodes[0].nodeValue;
-            dispo.innerHTML=resultado+"\n";
+            dispo.innerHTML="EL nombre de usuario "+resultado+" esta disponible";
             if(resultado!="si"){
-                let alternativas=raiz.getElementsByTagName("alternativas")[0].childNodes[0].nodeValue;
+                let alternativas=raiz.getElementsByTagName("alternativas")[0];
+                let login=alternativas.getElementsByTagName("login");
+				dispo.innerHTML+="<h3>Alternativas</h3>";
+				dispo.innerHTML+="<ul>";
+				for (let i = 0; i < login.length; i++) {
+					
+					dispo.innerHTML+= "<li>"+login[i].childNodes[0].nodeValue+"</li>";
+					
+				}
+				dispo.innerHTML+="</ul>";
             }
 
 			

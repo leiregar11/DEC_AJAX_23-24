@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 16</title>
+</head>
+<script>
+    window.onload=inicio;
+    var http_municipios;
+    var http_provincias;
+    function inicio() {
+
+        http_provincias=new XMLHttpRequest();
+        http_provincias.onreadystatechange=cargaProvincias;
+
+        http_provincias.open("GET","http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio6/servidor/cargaProvinciasXML.php",true)
+        http_provincias.send(null);
+        
+    }
+
+    function cargaProvincias() {
+        let selectP= document.getElementById("provincias");
+        if(http_provincias.readyState==4){
+            if(http_provincias.status==200){
+                let docProv_XML= http_provincias.responseXML;
+                
+                let raizProvincias=docProv_XML.getElementsByTagName("provincias")[0];
+
+                let provincias=raizProvincias.getElementsByTagName("provincia");
+
+                for (let i = 0; i < provincias.length; i++) {
+                    let option= document.createElement("option");
+                    option.value=provincias[i].getElementsByTagName("codigo")[0].childNodes[0].nodeValue;
+                    option.textContent=provincias[i].getElementsByTagName("nombre")[0].firstChild.nodeValue;
+                    option.addEventListener("click",llamaMunicipios);
+                    selectP.appendChild(option); 
+                        
+                }
+            }
+        }   
+    }
+    function llamaMunicipios() {
+        let provincia=this.value;
+        http_municipios=new XMLHttpRequest();
+        http_municipios.onreadystatechange=cargaMunicipios;
+        http_municipios.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio4/servidor/compruebaDisponibilidadXML.php", true);
+		http_municipios.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		var  cadena_segura = encodeURIComponent(login.value);
+		http_municipios.send("login="+cadena_segura+"&nocache="+Math.random());
+	
+    }
+</script>
+<body>
+    <h4>Provincias: <select id="provincias">
+
+    </select></h4>
+    <h4>Provincias: <select id="municipios">
+
+    </select></h4>
+    
+</body>
+</html>
