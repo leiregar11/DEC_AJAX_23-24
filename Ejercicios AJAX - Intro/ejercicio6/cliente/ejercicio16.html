@@ -47,7 +47,7 @@
         http_municipios.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio4/servidor/compruebaDisponibilidadXML.php", true);
 		http_municipios.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		var  cadena_segura = encodeURIComponent(login.value);
-		http_municipios.send("login="+cadena_segura+"&nocache="+Math.random());
+		http_municipios.send("provincia="+cadena_segura);
 	
     }
 </script>
@@ -55,7 +55,7 @@
     <h4>Provincias: <select id="provincias">
 
     </select></h4>
-    <h4>Provincias: <select id="municipios">
+    <h4>Municipios: <select id="municipios">
 
     </select></h4>
     
