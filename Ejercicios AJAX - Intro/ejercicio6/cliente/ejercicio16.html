@@ -42,20 +42,45 @@
     }
     function llamaMunicipios() {
         let provincia=this.value;
-        http_municipios=new XMLHttpRequest();
-        http_municipios.onreadystatechange=cargaMunicipios;
-        http_municipios.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio4/servidor/compruebaDisponibilidadXML.php", true);
-		http_municipios.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		var  cadena_segura = encodeURIComponent(login.value);
-		http_municipios.send("provincia="+cadena_segura);
+            http_municipios=new XMLHttpRequest();
+            http_municipios.onreadystatechange=cargaMunicipios;
+            http_municipios.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio6/servidor/cargaMunicipiosXML.php", true);
+            http_municipios.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            
+            http_municipios.send("provincia="+provincia);
+        
+        
 	
+    }
+    function cargaMunicipios() {
+        let selectM= document.getElementById("municipios");
+        selectM.innerHTML="";
+
+        
+        if(http_municipios.readyState==4){
+            if(http_municipios.status==200){
+                let docMuni_XML=http_municipios.responseXML;
+                let raizMuni=docMuni_XML.getElementsByTagName("municipios")[0];
+                let municipios=raizMuni.getElementsByTagName("municipio");
+                for (let i = 0; i < municipios.length; i++) {
+                    let option= document.createElement("option");
+                    option.value=municipios[i].getElementsByTagName("codigo")[0].childNodes[0].nodeValue;
+                    option.textContent=municipios[i].getElementsByTagName("nombre")[0].firstChild.nodeValue;
+                    // option.addEventListener("click",llamaMunicipios);
+                    selectM.appendChild(option); 
+                        
+                }
+
+            }
+        }
     }
 </script>
 <body>
     <h4>Provincias: <select id="provincias">
-
+        <option value="">--selecciona provincia--</option>
     </select></h4>
     <h4>Municipios: <select id="municipios">
+        <option value="">--selecciona municipio--</option>
 
     </select></h4>
     
