@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 16</title>
+    <title>Ejercicio 17</title>
 </head>
 <script>
     window.onload=inicio;
@@ -56,7 +56,7 @@
         if(http_municipios.readyState==4){
             if(http_municipios.status==200){
                 let municipios=JSON.parse( http_municipios.responseText);
-                console.log(municipios);
+                // console.log(municipios);
                 for (var codigo in municipios) {
                         var nombre = municipios[codigo];
                     let option= document.createElement("option");
