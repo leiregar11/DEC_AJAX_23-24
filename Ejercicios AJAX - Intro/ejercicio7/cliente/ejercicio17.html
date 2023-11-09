@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 16</title>
+</head>
+<script>
+    window.onload=inicio;
+    var http_municipios;
+    var http_provincias;
+    function inicio() {
+
+        http_provincias=new XMLHttpRequest();
+        http_provincias.onreadystatechange=cargaProvincias;
+
+        http_provincias.open("GET","http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio7/servidor/cargaProvinciasJSON.php",true)
+        http_provincias.send(null);
+        
+    }
+
+    function cargaProvincias() {
+        let selectP= document.getElementById("provincias");
+        if(http_provincias.readyState==4){
+            if(http_provincias.status==200){
+                let provincias=JSON.parse( http_provincias.responseText);
+                
+                for (var codigo in provincias) {
+                        var nombre = provincias[codigo];
+                    let option= document.createElement("option");
+                    option.value=codigo;
+                    option.textContent=nombre;
+                    option.addEventListener("click",llamaMunicipios);
+                    selectP.appendChild(option); 
+                        
+                 }
+            }
+        }   
+    }
+    function llamaMunicipios() {
+        let provincia=this.value;
+            http_municipios=new XMLHttpRequest();
+            http_municipios.onreadystatechange=cargaMunicipios;
+            http_municipios.open("POST", "http://localhost/DEC/Ejercicios%20AJAX%20-%20Intro/ejercicio7/servidor/cargaMunicipiosJSON.php", true);
+            http_municipios.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            
+            http_municipios.send("provincia="+provincia);
+        
+        
+	
+    }
+    function cargaMunicipios() {
+        let selectM= document.getElementById("municipios");
+        selectM.innerHTML="";
+
+        if(http_municipios.readyState==4){
+            if(http_municipios.status==200){
+                let municipios=JSON.parse( http_municipios.responseText);
+                console.log(municipios);
+                for (var codigo in municipios) {
+                        var nombre = municipios[codigo];
+                    let option= document.createElement("option");
+                    option.value=codigo;
+                    option.textContent=nombre;
+                    selectM.appendChild(option); 
+                        
+                 }
+                        
+                
+
+            }
+        }
+    }
+</script>
+<body>
+    <h4>Provincias: <select id="provincias">
+        <option value="">--selecciona provincia--</option>
+    </select></h4>
+    <h4>Municipios: <select id="municipios">
+        <option value="">--selecciona municipio--</option>
+
+    </select></h4>
+    
+</body>
+</html>
