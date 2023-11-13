@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    var http_pelis;
+    var http_sinopsis;
+    window.onload=inicio();
+    function inicio(){
+        http_pelis=new XMLHttpRequest();
+        let url="http://localhost/DEC/Ejercicios%20AJAX/ejercicio2/index.php";
+        http_pelis.open("GET", url, true);
+        http_pelis.onreadystatechange=cargaCartelera;
+        http_pelis.send(null);
+    }
+    function  cargaCartelera() {
+
+        if(http_pelis.readyState==4){
+            if(http_pelis.status==200){
+                let archivo = http_pelis.responseXML;
+                // console.log(http_pelis.responseText);
+
+                let raiz = archivo.getElementsByTagName("Peliculas")[0];
+                let peliculas = raiz.getElementsByTagName("Pelicula");
+                let container = document.getElementById("pelis");
+                container.style.display = "flex";
+
+                for (let i = 0; i < peliculas.length; i++) {
+                    let crearImg = document.createElement("img");
+                    let div = document.createElement("div");
+                    let peli = peliculas[i];
+                    let img = peli.getElementsByTagName("imagen")[0].childNodes[0].nodeValue;
+                    crearImg.src = "http://localhost/DEC/Ejercicios%20AJAX/ejercicio2/imagenes/" + img;
+                    // console.log(crearImg.src);
+                    crearImg.id=peli.getElementsByTagName("sinopsis")[0].childNodes[0].nodeValue;
+                    crearImg.addEventListener("click", cargarSinopsis);
+                    div.appendChild(crearImg);
+
+                    let texto = document.createElement("p");
+                    texto.textContent = peli.getElementsByTagName("Titulo")[0].childNodes[0].nodeValue;
+                    div.appendChild(texto);
+
+                    div.style.width = '33%';
+                    div.style.textAlign = 'center';  
+                    container.appendChild(div);
+                }
+
+            }
+        }
+        
+    }
+    function cargarSinopsis() {
+        let fichero=this.id;
+        console.log(fichero);
+        http_sinopsis=new XMLHttpRequest;
+        url="http://localhost/DEC/Ejercicios%20AJAX/ejercicio2/sinopsis.php?fichero="+fichero;
+        http_sinopsis.open("GET",url,true);
+        http_sinopsis.onreadystatechange=verSinopsis;
+        http_sinopsis.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            
+            http_sinopsis.send(null);
+        
+
+    }
+    function verSinopsis() {
+        if(http_sinopsis.readyState==4){
+            if (http_sinopsis.status==200) {
+                // console.log(http_sinopsis.responseText);
+                let imprimir=document.getElementById("sinopsis");
+                imprimir.textContent=http_sinopsis.responseText;
+            }
+        }
+    }
+</script>
+<body>
+    <div id="pelis"></div>
+    <p id="sinopsis"></p>
+</body>
+</html>

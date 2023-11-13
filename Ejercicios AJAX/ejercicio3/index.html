@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    var http_pelis;
+    var http_sinopsis;
+    window.onload=inicio;
+    function inicio(){
+        let boton = document.getElementById("enviar");
+
+        boton.addEventListener("click", cargarInfo);
+
+    }
+    function cargarInfo(event) {
+        event.preventDefault();
+        http_pelis=new XMLHttpRequest();
+        let url="http://localhost/DEC/Ejercicios%20AJAX/ejercicio3/index.php";
+        http_pelis.open("GET", url, true);
+        http_pelis.onreadystatechange=cargarDirectores;
+        http_pelis.send(null);
+    }
+
+    function cargarDirectores() {       
+
+        let selectDirectores=document.getElementById("directores");
+        if(http_pelis.readyState==4){
+            if(http_pelis.status==200){
+                let archivo=http_pelis.responseXML;
+                console.log(http_pelis.responseText);
+                let raiz=archivo.getElementsByTagName("Peliculas")[0];
+            }
+        }
+    }
+    
+</script>
+<body>
+    <input type="button" id="enviar" value="Enviar">
+    <select id="directores">
+        <option value="0">--Directores--</option>
+    </select>
+    <select id="titulos">
+        <option value="0">--Titulos--</option>
+
+    </select>
+    
+</body>
+</html>
