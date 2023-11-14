@@ -40,12 +40,11 @@
 
         if(http_pelis.readyState==4){
             if(http_pelis.status==200){
-                archivoPelis=http_pelis.responseXML;
-                raizPelis=archivoPelis.getElementsByTagName("Peliculas")[0];
-                peliculas=raizPelis.getElementsByTagName("Pelicula");
+                raizPelis=JSON.parse(http_pelis.responseText);
+                peliculas=raizPelis.Pelicula;
                 for (let i = 0; i < peliculas.length; i++) {
                     let peli = peliculas[i];
-                    let director=peli.getElementsByTagName("Director")[0].childNodes[0].nodeValue;
+                    let director=peli.Director;
                     if(!existe(director)){
                         let option=document.createElement("option");
                         option.textContent=director;
@@ -72,13 +71,12 @@
                         
                         for (let i = 0; i < peliculas.length; i++) {
                             let peli = peliculas[i];
-                            if(director==peli.getElementsByTagName("Director")[0].childNodes[0].nodeValue){
+                            if(director==peli.Director){
                                 
                                 let option=document.createElement("option");
-                                option.value=peli.getElementsByTagName("sinopsis")[0].childNodes[0].nodeValue;
-                                console.log(option.value);
-                                option.id=peli.getElementsByTagName("imagen")[0].childNodes[0].nodeValue;
-                                option.textContent=peli.getElementsByTagName("Titulo")[0].childNodes[0].nodeValue;
+                                option.value=peli.sinopsis;
+                                option.id=peli.imagen;
+                                option.textContent=peli.Titulo;
                                 // option.addEventListener("click",cargarPelis);
                                 selectTitulos.appendChild(option);
                             }
@@ -110,7 +108,6 @@
             let url="http://localhost/DEC/Ejercicios%20AJAX/ejercicio5/sinopsis.php?fichero="+fichero;
             http_sinopsis.open("GET",url,true);
             http_sinopsis.onreadystatechange=verPeli;
-            http_sinopsis.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 
             http_sinopsis.send(null);
         }

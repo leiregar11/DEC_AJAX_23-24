@@ -1,5 +1,4 @@
 {
-   "Peliculas": {
      "Pelicula": [
        {
          "Director": "Quentin Tarantino",
@@ -38,6 +37,6 @@
          "sinopsis": "gladiator.txt"
        }
      ]
-   }
+
  }
  

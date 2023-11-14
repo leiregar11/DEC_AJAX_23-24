@@ -1,6 +1,6 @@
 <?php
 
-$fichero = 'peliculas.xml';
+$fichero = 'peliculas.json';
 
 if (file_exists($fichero)) {
 	$output = file_get_contents($fichero);
