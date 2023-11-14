@@ -30,7 +30,7 @@
     function cargarInfo(event) {
         event.preventDefault();
         http_pelis=new XMLHttpRequest();
-        let url="http://localhost/DEC/Ejercicios%20AJAX/ejercicio3/index.php";
+        let url="http://localhost/DEC/Ejercicios%20AJAX/ejercicio5/index.php";
         http_pelis.open("GET", url, true);
         http_pelis.onreadystatechange=cargarDirectores;
         http_pelis.send(null);
@@ -107,7 +107,7 @@
             mostrar.appendChild(img);
 
             http_sinopsis=new XMLHttpRequest;
-            let url="http://localhost/DEC/Ejercicios%20AJAX/ejercicio3/sinopsis.php?fichero="+fichero;
+            let url="http://localhost/DEC/Ejercicios%20AJAX/ejercicio5/sinopsis.php?fichero="+fichero;
             http_sinopsis.open("GET",url,true);
             http_sinopsis.onreadystatechange=verPeli;
             http_sinopsis.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -118,7 +118,7 @@
     function mostrarCartel(fichero) {
         for (let i = 0; i < selectTitulos.length; i++) {
             if(selectTitulos.options[i].value==fichero){
-                let img="http://localhost/DEC/Ejercicios%20AJAX/ejercicio3/imagenes/" +selectTitulos.options[i].id;
+                let img="http://localhost/DEC/Ejercicios%20AJAX/ejercicio5/imagenes/" +selectTitulos.options[i].id;
                 return img;
             }
             

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ej1 - Leire</title>
+</head>
+<script>
+    window.onload=inicio;
+    var http;
+    function inicio() {
+        http=new XMLHttpRequest();
+        http.onreadystatechange=cargarPeliculas;
+        http.open("GET","http://localhost/DEC/Ejercicios%20AJAX/ejercicio4/index.php",true);
+        http.send(null);
+    }
+
+    function cargarPeliculas(){
+        let insertTabla=document.getElementById("tabla");
+        let tablaHTML="";
+        if(http.readyState==4){
+            if(http.status==200){
+                console.log(http.responseText);
+                let raiz=http.responseXML.getElementsByTagName("Peliculas")[0];
+                let peliculas=raiz.getElementsByTagName("Pelicula");
+                tablaHTML="<table > <th>Directores</th><th>Titulos</th>";
+                    
+                for (let i = 0; i < peliculas.length; i++) {
+                    tablaHTML += "<tr>";
+                    const peli = peliculas[i];
+                    let director=peli.getElementsByTagName("Director")[0].childNodes[0].nodeValue;
+                    let titulo=peli.getElementsByTagName("Titulo")[0].childNodes[0].nodeValue;
+                    tablaHTML+="<td style='border: 1px solid #ccc; padding: 10px;'>"+director+"</td><td style='border: 1px solid #ccc; padding: 10px;'>"+titulo+"</td>";
+
+                    tablaHTML += "</tr>";
+                    
+                }
+                tablaHTML += "</table>";
+                insertTabla.innerHTML=tablaHTML;
+            }
+        }
+    }
+</script>
+<body>
+    <div id="tabla"></div>
+</body>
+</html>
